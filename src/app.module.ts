@@ -2,9 +2,33 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './v1/user/user.module';
+import { ConfigModule } from '@nestjs/config';
+import { ValidationSchema } from './app.config-validationSchema';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 @Module({
-  imports: [UserModule],
+  imports: [
+    UserModule,
+    ConfigModule.forRoot({
+      envFilePath: (() => {
+        switch (process.env.NODE_ENV) {
+          case 'development':
+            return ['.env.development'];
+          case 'staging':
+            return ['.env.staging'];
+          case 'production':
+            return ['.env.production'];
+          default:
+            return ['.env.development'];
+        }
+      })(),
+      cache: true,
+      isGlobal: true,
+      validationSchema: ValidationSchema,
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
