@@ -1,18 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UserModule } from './v1/user/user.module';
 import { ConfigModule } from '@nestjs/config';
-import { ValidationSchema } from './app.config-validationSchema';
-import { PrismaService } from './prisma/prisma.service';
-import { PrismaModule } from './prisma/prisma.module';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
+import { ValidationSchema } from 'src/app.config-validationSchema';
+import { PrismaModule } from 'src/prisma/prisma.module';
+import { SeederService } from './seeder.service';
 
 @Module({
   imports: [
-    UserModule,
     ConfigModule.forRoot({
       envFilePath: (() => {
         switch (process.env.NODE_ENV) {
@@ -32,7 +25,6 @@ dotenv.config();
     }),
     PrismaModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [SeederService],
 })
-export class AppModule {}
+export class SeederModule {}
