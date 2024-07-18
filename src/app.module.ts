@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { UserModule } from './v1/user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { ValidationSchema } from './app.config-validationSchema';
+import { PrismaService } from './prisma/prisma.service';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -30,6 +31,6 @@ dotenv.config();
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, PrismaService],
 })
 export class AppModule {}
