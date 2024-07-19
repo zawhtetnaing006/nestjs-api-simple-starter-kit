@@ -6,6 +6,8 @@ import { ConfigModule } from '@nestjs/config';
 import { ValidationSchema } from './app.config-validationSchema';
 import { PrismaService } from './prisma/prisma.service';
 import { PrismaModule } from './prisma/prisma.module';
+import { FileModule } from './file/file.module';
+import { FileLocalService } from './file/service/file.local.service';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -31,8 +33,9 @@ dotenv.config();
       validationSchema: ValidationSchema,
     }),
     PrismaModule,
+    FileModule.register('local'),
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService, PrismaService, FileLocalService],
 })
 export class AppModule {}
