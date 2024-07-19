@@ -1,16 +1,47 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Transporter } from './mail.transporter';
+import { MailDto } from './mail.dto';
+import * as ejs from 'ejs';
+
 @Injectable()
 export class MailService {
+  private readonly logger = new Logger(MailService.name);
   constructor(private readonly transporter: Transporter) {}
-  async sendMail(message: string) {
+
+  async sendMail(mailDto: MailDto) {
     const transport = this.transporter.getTransporter();
-    await transport.sendMail({
-      from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
-      to: 'bar@example.com, baz@example.com', // list of receivers
-      subject: 'Hello ✔', // Subject line
-      text: message, // plain text body
-      html: `${message}`, // html body
-    });
+    let htmlContent = mailDto.text;
+
+    if (mailDto.templatePath && mailDto.templateData) {
+      htmlContent = await this.renderTemplate(
+        mailDto.templatePath,
+        mailDto.templateData,
+      );
+    }
+    try {
+      await transport.sendMail({
+        from: mailDto.to,
+        to: mailDto.from,
+        subject: mailDto.subject,
+        text: mailDto.text,
+        html: htmlContent,
+      });
+    } catch (error) {
+      this.logger.error(`Error sending email to ${mailDto.to}`, error.stack);
+    }
+  }
+
+  async renderTemplate(
+    templatePath: string,
+    templateData: Record<string, any>,
+  ) {
+    try {
+      return ejs.renderFile(templatePath, templateData);
+    } catch (error) {
+      this.logger.error(
+        `Error rendering template file: ${templatePath}`,
+        error.stack,
+      );
+    }
   }
 }
