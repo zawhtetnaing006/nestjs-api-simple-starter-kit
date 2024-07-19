@@ -5,4 +5,8 @@ export const ValidationSchema = Joi.object({
     .valid('development', 'staging', 'production')
     .default('development'),
   DATABASE_URL: Joi.string().required(),
+  MAIL_HOST: Joi.string().required(),
+  MAIL_PORT: Joi.string().required(),
+  MAIL_USER: Joi.string().required(),
+  MAIL_PASSWORD: Joi.string().required(),
 });
