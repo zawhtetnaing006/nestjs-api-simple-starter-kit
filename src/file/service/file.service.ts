@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { FileLocalService } from './file.local.service';
 import { FileServiceInterface } from '../interface/file.service.interface';
 import { FileS3Service } from './file.s3.service';
+import { FileUploadDto } from '../dto/file-upload.dto';
 
 @Injectable()
 export class FileService implements FileServiceInterface {
@@ -24,11 +25,15 @@ export class FileService implements FileServiceInterface {
     }
   }
 
-  upload(file: Express.Multer.File) {
-    return this.fileService.upload(file);
+  upload(fileUploadDto: FileUploadDto) {
+    return this.fileService.upload(fileUploadDto);
   }
 
-  delete() {
-    return this.fileService.delete();
+  delete(filePath: string) {
+    return this.fileService.delete(filePath);
+  }
+
+  get(filePath: string) {
+    return this.fileService.get(filePath);
   }
 }

@@ -16,6 +16,7 @@ export class FileModule {
         FileS3Service,
         { provide: 'STORAGE_DRIVER', useValue: storageDriver },
       ],
+      exports: [FileService]
     };
   }
 }
