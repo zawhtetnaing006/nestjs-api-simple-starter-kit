@@ -6,7 +6,7 @@ import { FileS3Service } from './service/file.s3.service';
 
 @Module({})
 export class FileModule {
-  static register(storageDriver: string): DynamicModule {
+  static register(storageDriver?: string): DynamicModule {
     return {
       module: FileModule,
       controllers: [FileController],
@@ -14,7 +14,7 @@ export class FileModule {
         FileLocalService,
         FileService,
         FileS3Service,
-        { provide: 'STORAGE_DRIVER', useValue: storageDriver },
+        { provide: 'STORAGE_DRIVER', useValue: storageDriver ? storageDriver : 'local' },
       ],
       exports: [FileService]
     };
