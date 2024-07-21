@@ -14,9 +14,12 @@ export class FileModule {
         FileLocalService,
         FileService,
         FileS3Service,
-        { provide: 'STORAGE_DRIVER', useValue: storageDriver ? storageDriver : 'local' },
+        {
+          provide: 'STORAGE_DRIVER',
+          useValue: storageDriver ? storageDriver : 'local',
+        },
       ],
-      exports: [FileService]
+      exports: [FileService],
     };
   }
 }

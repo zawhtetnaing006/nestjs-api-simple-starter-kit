@@ -16,7 +16,7 @@ export class FileLocalService implements FileServiceInterface {
     }
   }
 
-  upload(fileUploadDto: FileUploadDto): FileResponseDto {
+  async upload(fileUploadDto: FileUploadDto): Promise<FileResponseDto> {
     try {
       const dirPath = path.join(this.uploadPath, fileUploadDto.relativePath);
       const filePath = path.join(dirPath, fileUploadDto.fileName);
@@ -43,7 +43,7 @@ export class FileLocalService implements FileServiceInterface {
     }
   }
 
-  delete(filePath: string): boolean {
+  async delete(filePath: string): Promise<boolean> {
     try {
       const fullFilePath = path.join(this.uploadPath, filePath);
 
@@ -56,12 +56,12 @@ export class FileLocalService implements FileServiceInterface {
     } catch (error) {
       throw new HttpException(
         'Error deleting file: ' + error.message,
-        error.status
+        error.status,
       );
     }
   }
 
-  get(filePath: string): FileResponseDto {
+  async get(filePath: string): Promise<FileResponseDto> {
     try {
       const fullFilePath = path.join(this.uploadPath, filePath);
 
@@ -82,7 +82,7 @@ export class FileLocalService implements FileServiceInterface {
       console.log(error);
       throw new HttpException(
         'Error retrieving file: ' + error.message,
-        error.status
+        error.status,
       );
     }
   }

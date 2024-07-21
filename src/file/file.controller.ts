@@ -23,13 +23,17 @@ export class FileController {
   @Post('test')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
-  upload(@UploadedFile() file: Express.Multer.File, @Body() fileDto: FileDto) {
+  async upload(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() fileDto: FileDto,
+  ) {
     const fileUploadDto: FileUploadDto = {
       fileName: file.originalname,
       relativePath: 'profile',
-      file: file
-    }
-    const fileResponse: FileResponseDto = this.fileService.upload(fileUploadDto);
+      file: file,
+    };
+    const fileResponse: FileResponseDto =
+      await this.fileService.upload(fileUploadDto);
     console.log(fileResponse);
     return 'Success';
   }
@@ -40,10 +44,9 @@ export class FileController {
   }
 
   @Get('')
-  get(@Query('filePath') filePath:string, @Res() res: Response) {
-    const file: FileResponseDto = this.fileService.get(filePath);
+  async get(@Query('filePath') filePath: string, @Res() res: Response) {
+    const file: FileResponseDto = await this.fileService.get(filePath);
     res.setHeader('Content-Type', file.mimeType);
     res.send(file.file);
   }
-
 }

@@ -16,7 +16,7 @@ export class FileS3Service implements FileServiceInterface {
     }
   }
 
-  upload(fileUploadDto: FileUploadDto): FileResponseDto {
+  async upload(fileUploadDto: FileUploadDto): Promise<FileResponseDto> {
     const dirPath = path.join(this.uploadPath, fileUploadDto.relativePath);
 
     const filePath = path.join(dirPath, fileUploadDto.fileName);
@@ -33,12 +33,12 @@ export class FileS3Service implements FileServiceInterface {
     const fileResponse: FileResponseDto = {
       file: fileUploadDto.file.buffer,
       mimeType,
-      size: stats.size
-    }
+      size: stats.size,
+    };
     return fileResponse;
   }
 
-  delete(filePath: string) {
+  async delete(filePath: string) {
     const fullFilePath = path.join(this.uploadPath, filePath);
 
     if (!fs.existsSync(fullFilePath)) {
@@ -49,7 +49,7 @@ export class FileS3Service implements FileServiceInterface {
     return true;
   }
 
-  get(filePath: string): FileResponseDto {
+  async get(filePath: string): Promise<FileResponseDto> {
     const fullFilePath = path.join(this.uploadPath, filePath);
 
     if (!fs.existsSync(fullFilePath)) {
@@ -61,8 +61,8 @@ export class FileS3Service implements FileServiceInterface {
     const mimeType = mime.lookup(fullFilePath);
     const fileResponseDto: FileResponseDto = {
       file: fileBuffer,
-      mimeType
-    }
+      mimeType,
+    };
     return fileResponseDto;
   }
 }

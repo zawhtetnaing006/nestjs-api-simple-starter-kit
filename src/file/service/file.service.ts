@@ -25,8 +25,8 @@ export class FileService implements FileServiceInterface {
     }
   }
 
-  upload(fileUploadDto: FileUploadDto) {
-    return this.fileService.upload(fileUploadDto);
+  async upload(fileUploadDto: FileUploadDto) {
+    return await this.fileService.upload(fileUploadDto);
   }
 
   delete(filePath: string) {
