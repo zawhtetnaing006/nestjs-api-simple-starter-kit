@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { ApiResponseInterceptor } from './api-response/api-response.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,6 +13,7 @@ async function bootstrap() {
       transform: true, //to transform plain js objects from payload to object typed
     }),
   );
+  app.useGlobalInterceptors(new ApiResponseInterceptor());
   const config = new DocumentBuilder()
     .setTitle('Learning platform')
     .setVersion('1.0')
