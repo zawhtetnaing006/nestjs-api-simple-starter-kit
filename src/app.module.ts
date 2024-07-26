@@ -8,6 +8,7 @@ import { PrismaService } from './prisma/prisma.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { FileModule } from './file/file.module';
 import { FileLocalService } from './file/service/file.local.service';
+import { MyLoggerService } from './my-logger/my-logger.service';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -36,6 +37,6 @@ dotenv.config();
     FileModule.register('local'),
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService, FileLocalService],
+  providers: [AppService, PrismaService, FileLocalService, MyLoggerService],
 })
 export class AppModule {}
